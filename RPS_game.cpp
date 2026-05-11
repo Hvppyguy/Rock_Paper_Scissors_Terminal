@@ -6,69 +6,72 @@ class Opponent {
     private:
         int chances[3] = {10, 10, 10};
     public:
-        char random_output(){
-            char Output[3] = {'r', 'p', 's'};
-            std::string words[3] = {"Rock", "Paper", "Scissor"};
+        std::string random_output(){
+            std::string words[3] = {"rock", "paper", "scissors"};
             std::random_device rd;
             std::mt19937 gen(rd());
             std::discrete_distribution<> dist(chances, chances + 3);
             int result = dist(gen);
-            std::cout << words[result] << "\n";
-            return Output[result];
+            return words[result];
         }
 };
 class Game_Logic {
     public:
-        void lose(){
+        void lose(std::string opp){
+            std::cout << opp << "\n";
             std::cout << "You Lost" << "\n";
+
         }
-        void win() {
+        void win(std::string opp) {
+            std::cout << opp << "\n";
             std::cout << "You Won" << "\n";
-        }
-        void compare(char player[], char opp) {
-            int player_int = player[0] % 10;
-            int opp_int = opp % 10;
-            if(player_int == opp_int){
+            }
+        int compare(std::string player, std::string opp) {
+            if(!(player == "rock" || "paper" || "scissors")){
+                std::cout << "ERROR" << "\n";
+                return 0;
+            }
+            else if(player == opp){
                 std::cout << "Tie" << "\n";
+                return 0;
             }
-            else{
-                switch(player_int){
-                    case 4: // Rock(r)
-                        if (opp_int == 5){
-                            win();
-                        }
-                        else{
-                            lose();
-                        }
-                        break;
-                    case 2: //Paper(p)
-                        if (opp == 4){
-                            win();
-                        }
-                        else{
-                            lose();
-                        }
-                        break;
-                    case 5: //Sicssors(s)
-                        if (opp == 2){
-                            win();
-                        }
-                        else{
-                            lose();
-                        }
-                        break;
+            else if(player == "rock"){
+                if(opp == "paper"){
+                    lose(opp);
                 }
+                else {
+                    win(opp);
+                }
+                return 0;
             }
+            else if(player == "paper"){
+                if(opp == "scissors"){
+                    lose(opp);
+                }
+                else{
+                    win(opp);
+                }
+                return 0;
+            }
+            else if(player == "scissors"){
+                if(opp == "rock"){
+                    lose(opp);
+                }
+                else{
+                    win(opp);
+                }
+                return 0;
+            }
+            return 0;
         }
 };
 int main(){
     Opponent opp;
     Game_Logic logic;
     while(true){
-        char *input[] = new char;
-        std::cin >> *input[];
-        logic.compare(*input[], opp.random_output());
-        delete input[];
+        std::string input;
+        std::cin >> input;
+        logic.compare(input, opp.random_output());
     }
     return 0;
 }
